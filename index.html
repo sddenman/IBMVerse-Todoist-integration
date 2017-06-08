@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verse Todoist Test Page</title>
+
+    <style>
+      pre {
+        margin-bottom: 50px;
+      }
+    </style>
+
+    <script>
+      /**
+       * Print out Verse API data for all the action samples
+       */
+      window.addEventListener("message", function(event) {
+        alert("Open developer tools before continuing in order to debug...");
+        debugger;
+        var eventData = event.data;
+        console.log(event);
+        if (eventData.verseApiType === "com.ibm.verse.ping.application.loaded") {
+          /**
+           * Message from Verse to check whether your web application is ready.
+           *
+           * Your application must send a message back to Verse to identify that
+           * it's ready to receive data from Verse.
+           */
+           var loaded_message = {
+             verseApiType : "com.ibm.verse.application.loaded"
+           };
+          event.source.postMessage(loaded_message, event.origin);
+        }
+        else if (eventData.verseApiType === "com.ibm.verse.action.clicked") {
+          var verseData = event.data.verseApiData.context;
+          document.getElementById("status").innerHTML = "";
+          document.getElementById("messages").innerHTML =
+            "Message received: " + "<hr><pre id='json'></pre>" +
+            "<hr>Subject:<hr><pre id='subjectData'></pre>" +
+            "<hr>Sender:<hr><pre id='senderData'></pre>" +
+            "<hr>Message URL:<hr><pre id='unidData'></pre>" +
+            "<hr>Body:<hr><p id='bodyData'></p>"
+            ;
+          document.getElementById("json").innerText = JSON.stringify(eventData, null, 2);
+          document.getElementById("subjectData").innerText = verseData.subject;
+          document.getElementById("senderData").innerText = verseData.sender.emailAddress;
+          document.getElementById("unidData").innerText =
+            "https://mail.notes.na.collabserv.com/verse?mode=mailread#tid=" +
+            verseData.unid;
+          document.getElementById("bodyData").innerHTML = verseData.body;
+        }
+        else {
+          console.log("Unknown verseApiType: " + eventData.verseApiType);
+          alert("Unknown verseApiType: " + eventData.verseApiType);
+        }
+      }, false);
+    </script>
+  </head>
+
+  <body>
+    <h1>Verse Todoist Test Page</h1>
+    <div id="status">Waiting for messages from Verse.</div>
+    <div id="query-str"></div>
+    <div id="messages"></div>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "com.ibm.us.sddenman.versetodoist.app.widget",
+    "name": "Verse-Todoist App",
+    "title": "Create Todoist Tasks from IBM Verse Messages",
+    "description": "",
+    "extensions": [
+      {
+        "id": "com.ibm.us.sddenman.versetodoist.ext.widget.mail.actions",
+        "name": "Verse-Todoist App Mail Actions",
+        "type": "com.ibm.verse.ext.widget",
+        "payload": {
+          "url": "http://127.0.0.1:8887",
+          "features": [
+            "core"
+          ],
+          "actions": [
+            {
+              "id": "com.ibm.verse.ext.mail.read.action",
+              "path": "mail.read",
+              "text": "Create Todoist Task",
+              "title": "Create Todoist Task",
+              "location": "window",
+              "renderParams": {
+                "width": "500",
+                "height": "700"
+              }
+            }
+          ]
+        }
+      }
+    ],
+
+    "services": [
+      "Verse"
+    ]
+  }
+]
